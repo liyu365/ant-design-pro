@@ -4,9 +4,14 @@ import { formatMessage } from 'umi-plugin-react/locale';
 import Authorized from '@/utils/Authorized';
 import { menu } from '../defaultSettings';
 
-const { check } = Authorized;
+const { check } = Authorized; // 此处的check就是'src\components\Authorized\CheckPermissions.js'
+// console.log(check)
 
 // Conversion router to menu.
+
+// data: 当前层级的路由配置
+// parentAuthority: 父层级路由配置中的authority
+// parentName: 父层级路由配置中的name
 function formatter(data, parentAuthority, parentName) {
   if (!data) {
     return undefined;
@@ -110,8 +115,8 @@ export default {
   effects: {
     *getMenuData({ payload }, { put }) {
       const { routes, authority, path } = payload;
-      const originalMenuData = memoizeOneFormatter(routes, authority, path);
-      const menuData = filterMenuData(originalMenuData);
+      const originalMenuData = memoizeOneFormatter(routes, authority, path); // 根据路由配置生成菜单数据
+      const menuData = filterMenuData(originalMenuData); // 根据菜单筛菜单
       const breadcrumbNameMap = memoizeOneGetBreadcrumbNameMap(originalMenuData);
       yield put({
         type: 'save',

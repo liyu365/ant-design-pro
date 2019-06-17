@@ -26,8 +26,13 @@ class Login extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      type: props.defaultActiveKey,
-      tabs: [],
+      type: props.defaultActiveKey, // 当前选中的TabPane的key。所有TabPane的key在Login页面中提供
+      tabs: [], // 由Login组件内部存在的TabPane子节点组件的uniqueId组成的数组
+      /**
+       * 由Login组件内部存在的表单项的name和TabPane的key组成，所有表单项的name在Login页面中提供
+       * active形如：
+       * {account: ['userName', 'password'], mobile: ['mobile', 'captcha']}
+       */
       active: {},
     };
   }
@@ -60,6 +65,7 @@ class Login extends Component {
         ...form,
       },
       updateActive: activeItem => {
+        // activeItem为表单项的字段名
         const { type, active } = this.state;
         if (active[type]) {
           active[type].push(activeItem);
@@ -88,6 +94,7 @@ class Login extends Component {
     const { type, tabs } = this.state;
     const TabChildren = [];
     const otherChildren = [];
+    // 遍历Login组件的子节点，把LoginTab子组件放到Tabs组件中渲染。最终把所有子组件都放到Form中渲染。
     React.Children.forEach(children, item => {
       if (!item) {
         return;
@@ -100,6 +107,7 @@ class Login extends Component {
       }
     });
     return (
+      // 这里之所以采用Context，是为了让LoginTab组件和LoginItem组件都可以修改Login组件自身的state
       <LoginContext.Provider value={this.getContext()}>
         <div className={classNames(className, styles.login)}>
           <Form onSubmit={this.handleSubmit}>

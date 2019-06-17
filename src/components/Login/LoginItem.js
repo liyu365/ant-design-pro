@@ -38,6 +38,11 @@ class WrapFormItem extends Component {
       return;
     }
     if (result instanceof Promise) {
+      /**
+       * props.onGetCaptcha方法由Login页面提供
+       * 此方法返回一个Promise对象，并在成功发请求后台发送验证码后resolve，
+       * 在表单验证失败或请求后台发送验证码失败后reject
+       */
       result.then(this.runGetCaptchaCountDown);
     } else {
       this.runGetCaptchaCountDown();
@@ -79,15 +84,15 @@ class WrapFormItem extends Component {
 
     // 这么写是为了防止restProps中 带入 onChange, defaultValue, rules props
     const {
-      onChange,
-      customprops,
-      defaultValue,
-      rules,
-      name,
-      getCaptchaButtonText,
-      getCaptchaSecondText,
-      updateActive,
-      type,
+      onChange, // 由Login页面提供
+      customprops, // map中定义的表单项的prop
+      defaultValue, // 由Login页面提供
+      rules, // map中定义的表单项的rules
+      name, // 由Login页面提供
+      getCaptchaButtonText, // 由Login页面提供
+      getCaptchaSecondText, // 由Login页面提供
+      updateActive, // 由Login组件提供
+      type, // map中定义的表单项的key，也是被包装的表单项组件对外的名称
       ...restProps
     } = this.props;
 

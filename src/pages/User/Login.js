@@ -14,7 +14,7 @@ const { Tab, UserName, Password, Mobile, Captcha, Submit } = Login;
 }))
 class LoginPage extends Component {
   state = {
-    type: 'account',
+    type: 'account', // 当前选中的TabPane的key
     autoLogin: true,
   };
 

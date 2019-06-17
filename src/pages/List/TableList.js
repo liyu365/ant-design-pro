@@ -39,6 +39,9 @@ const getValue = obj =>
 const statusMap = ['default', 'processing', 'success', 'error'];
 const status = ['关闭', '运行中', '已上线', '异常'];
 
+/**
+ * 新增模态框
+ */
 const CreateForm = Form.create()(props => {
   const { modalVisible, form, handleAdd, handleModalVisible } = props;
   const okHandle = () => {
@@ -65,6 +68,9 @@ const CreateForm = Form.create()(props => {
   );
 });
 
+/**
+ * 更新模态框
+ */
 @Form.create()
 class UpdateForm extends PureComponent {
   static defaultProps = {
@@ -77,6 +83,7 @@ class UpdateForm extends PureComponent {
     super(props);
 
     this.state = {
+      // 表单的默认值
       formVals: {
         name: props.values.name,
         desc: props.values.desc,
@@ -87,6 +94,7 @@ class UpdateForm extends PureComponent {
         time: '',
         frequency: 'month',
       },
+      // 当前的步骤索引
       currentStep: 0,
     };
 
@@ -110,7 +118,7 @@ class UpdateForm extends PureComponent {
           if (currentStep < 2) {
             this.forward();
           } else {
-            handleUpdate(formVals);
+            handleUpdate(formVals); // 在完成最后一步时进行数据的update
           }
         }
       );
@@ -281,12 +289,12 @@ class UpdateForm extends PureComponent {
 @Form.create()
 class TableList extends PureComponent {
   state = {
-    modalVisible: false,
-    updateModalVisible: false,
-    expandForm: false,
-    selectedRows: [],
-    formValues: {},
-    stepFormValues: {},
+    modalVisible: false, // 新增模态框显示标志
+    updateModalVisible: false, // 更新模态框显示标志
+    expandForm: false, // 是否显示扩展筛选表单项的标志
+    selectedRows: [], // 当前选中的行数据组成的数组
+    formValues: {}, // 筛选表单的数据
+    stepFormValues: {}, // 点击表格行的"配置"按钮会被赋值当前行数据
   };
 
   columns = [
@@ -359,7 +367,7 @@ class TableList extends PureComponent {
 
   handleStandardTableChange = (pagination, filtersArg, sorter) => {
     const { dispatch } = this.props;
-    const { formValues } = this.state;
+    const { formValues } = this.state; // 此处需要把筛选项重新拿过来传递给后端
 
     const filters = Object.keys(filtersArg).reduce((obj, key) => {
       const newObj = { ...obj };
@@ -621,6 +629,18 @@ class TableList extends PureComponent {
   }
 
   render() {
+    /**
+     * 此处的响应数据data比较奇怪...，形如：
+     * {
+     *   list: [],
+     *   pagination: {
+     *     total: 46,
+     *     pageSize: 10,
+     *     current: 1
+     *   }
+     * }
+     * 不仅包含数据集，还包含当前分页信息
+     */
     const {
       rule: { data },
       loading,

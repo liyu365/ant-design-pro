@@ -45,6 +45,7 @@ const query = {
 
 class BasicLayout extends React.Component {
   componentDidMount() {
+    // props中的route为当前路由命中的路由配置
     const {
       dispatch,
       route: { routes, path, authority },

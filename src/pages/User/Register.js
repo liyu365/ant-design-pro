@@ -41,11 +41,11 @@ const passwordProgressMap = {
 @Form.create()
 class Register extends Component {
   state = {
-    count: 0,
-    confirmDirty: false,
-    visible: false,
-    help: '',
-    prefix: '86',
+    count: 0, // 获取验证码的倒计时
+    confirmDirty: false, // 确认密码的表单项是否已被修改的标志
+    visible: false, // password表单项的密码强度Popover的显示标志
+    help: '', // password表单项的错误提示信息
+    prefix: '86', // 手机号前缀
   };
 
   componentDidUpdate() {
@@ -204,7 +204,7 @@ class Register extends Component {
           </FormItem>
           <FormItem help={help}>
             <Popover
-              getPopupContainer={node => node.parentNode}
+              getPopupContainer={node => node.parentNode} // 设置浮层父节点，默认渲染到 body 上
               content={
                 <div style={{ padding: '4px 0' }}>
                   {passwordStatusMap[this.getPasswordStatus()]}
